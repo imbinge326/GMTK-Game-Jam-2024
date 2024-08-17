@@ -7,8 +7,8 @@ public class Shrink : ShootingModes
     [Header("Settings")]
     [SerializeField] private float shrinkSize;
     
-    [SerializeField] private bool canShoot;
-    [SerializeField] private float shotCooldown;
+    [SerializeField] private bool canShoot = true;
+    [SerializeField] private float shotCooldown = 0.25f;
 
     private bool shoot;
 
@@ -24,7 +24,7 @@ public class Shrink : ShootingModes
 
     private void ShrinkObject()
     {
-        if (shoot)
+        if (shoot && canShoot)
         {
             playerController.ShrinkShoot();
             canShoot = false;

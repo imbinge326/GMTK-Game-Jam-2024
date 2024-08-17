@@ -8,8 +8,8 @@ public class Enlarge : ShootingModes
 {
     [Header("Settings")]
     [SerializeField] private float enlargeSize;
-    [SerializeField] private bool canShoot;
-    [SerializeField] private float shotCooldown;
+    [SerializeField] private bool canShoot = true;
+    [SerializeField] private float shotCooldown = 0.25f;
 
     private bool shoot;
 
@@ -17,7 +17,7 @@ public class Enlarge : ShootingModes
     {
         base.InitState();
     }
-    
+
     public override void ExecuteMode()
     {
         EnlargeObject();
@@ -25,7 +25,7 @@ public class Enlarge : ShootingModes
 
     private void EnlargeObject()
     {
-        if (shoot)
+        if (shoot && canShoot)
         {
             playerController.EnlargeShoot();
             canShoot = false;

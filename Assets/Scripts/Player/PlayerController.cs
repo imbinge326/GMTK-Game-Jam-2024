@@ -9,6 +9,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float switchCooldown;
     [SerializeField] private float reloadCooldown;
 
+    [Header("Shot Counter")]
+    [SerializeField] private int enlargeCount = 0;
+    [SerializeField] private int shrinkCount = 0;
+
     private RaycastHit2D hit;
 
     private Camera mainCamera;
@@ -27,33 +31,61 @@ public class PlayerController : MonoBehaviour
 
         transform.position = worldPosition;
     }
-
-    public void EnlargeShoot()
+    private Transform CheckHitObject(RaycastHit2D hit)
     {
         //Debug.Log(hit);
-         if (hit.collider != null)
+        if (hit.collider != null)
         {
             // Check if the object hit has a specific tag
             if (hit.collider.CompareTag("Item"))
             {
                 //Debug.Log("Hit an object with the tag: " + hit.collider.tag);
                 Transform hitTransform = hit.collider.transform;
-                hitTransform.localScale *= 1.1f;
+                return hitTransform;
             }
             else
             {
                 //Debug.Log("Hit an object with a different tag: " + hit.collider.tag);
+                return null;
             }
         }
         else
         {
             //Debug.Log("Nothing hit");
+            return null;
         }
     }
 
-    public void ShrinkShoot()
+    public void EnlargeShoot()
     {
-        Debug.Log("Les");
+        Transform hitTransform = CheckHitObject(hit);
+        if (hitTransform != null && enlargeCount < 3)
+        {
+            hitTransform.localScale *= 1.1f;
+            enlargeCount++;
+            shrinkCount--;
+
+            if (enlargeCount > 3)
+            {
+                enlargeCount = 3;
+            }
+        }
+    }
+
+        public void ShrinkShoot()
+    {
+        Transform hitTransform = CheckHitObject(hit);
+        if (hitTransform != null && shrinkCount < 3)
+        {
+            hitTransform.localScale *= 0.9f;
+            shrinkCount++;
+            enlargeCount--;
+
+            if (shrinkCount > 3)
+            {
+                shrinkCount = 3;
+            }
+        }
     }
 
 
