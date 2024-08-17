@@ -11,7 +11,6 @@ public class PlayerMotor : MonoBehaviour
         shootingModes = GetComponents<ShootingModes>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (shootingModes.Length != 0)

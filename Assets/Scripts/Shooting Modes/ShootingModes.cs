@@ -7,7 +7,7 @@ public class ShootingModes : MonoBehaviour
     protected PlayerController playerController;
     protected bool leftMouseClick;
     protected bool rightMouseClick;
-    // Start is called before the first frame update
+    
     void Start()
     {
         InitState();

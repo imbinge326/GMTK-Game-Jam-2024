@@ -1,40 +1,60 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("Cooldowns")]
     [SerializeField] private float switchCooldown;
-    [SerializeField] private float shotCooldown;
     [SerializeField] private float reloadCooldown;
-    [SerializeField] private bool canShoot = true; // Serialized for testing purposes
+
+    private RaycastHit2D hit;
 
     private Camera mainCamera;
-    // Start is called before the first frame update
-    void Start()
+   
+    void Awake()
     {
         mainCamera = Camera.main;
         Cursor.visible = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        Vector3 mousePosition = Input.mousePosition;
-        Vector3 worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
+        Vector2 mousePosition = Input.mousePosition;
+        Vector2 worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
+        hit = Physics2D.Raycast(worldPosition, Vector2.zero);
 
-        // Set the z position to 0 so it stays in the 2D plane
-        worldPosition.z = 0;
         transform.position = worldPosition;
     }
 
     public void EnlargeShoot()
     {
-        // Implement proper cooldown
-        if(canShoot) 
+        //Debug.Log(hit);
+         if (hit.collider != null)
         {
-            Debug.Log("Gay");
+            // Check if the object hit has a specific tag
+            if (hit.collider.CompareTag("Item"))
+            {
+                //Debug.Log("Hit an object with the tag: " + hit.collider.tag);
+                Transform hitTransform = hit.collider.transform;
+                hitTransform.localScale *= 1.1f;
+            }
+            else
+            {
+                //Debug.Log("Hit an object with a different tag: " + hit.collider.tag);
+            }
+        }
+        else
+        {
+            //Debug.Log("Nothing hit");
         }
     }
+
+    public void ShrinkShoot()
+    {
+        Debug.Log("Les");
+    }
+
+
 }

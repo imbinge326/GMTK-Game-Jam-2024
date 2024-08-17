@@ -1,13 +1,12 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Enlarge : ShootingModes
+public class Shrink : ShootingModes
 {
     [Header("Settings")]
-    [SerializeField] private float enlargeSize;
+    [SerializeField] private float shrinkSize;
+    
     [SerializeField] private bool canShoot;
     [SerializeField] private float shotCooldown;
 
@@ -20,14 +19,14 @@ public class Enlarge : ShootingModes
     
     public override void ExecuteMode()
     {
-        EnlargeObject();
+        ShrinkObject();
     }
 
-    private void EnlargeObject()
+    private void ShrinkObject()
     {
         if (shoot)
         {
-            playerController.EnlargeShoot();
+            playerController.ShrinkShoot();
             canShoot = false;
             StartCoroutine(StartCooldown());
         }
@@ -35,13 +34,13 @@ public class Enlarge : ShootingModes
 
     protected override void GetInput()
     {
-        shoot = leftMouseClick;
+        shoot = rightMouseClick;
     }
-    IEnumerator StartCooldown()
+
+        IEnumerator StartCooldown()
     {
         //cooldown between each shot
         yield return new WaitForSeconds(shotCooldown);
         canShoot = true;
     }
-
 }
