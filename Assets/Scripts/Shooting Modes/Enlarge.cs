@@ -7,11 +7,9 @@ using UnityEngine;
 public class Enlarge : ShootingModes
 {
     [Header("Settings")]
-    [SerializeField] private float enlargeSize;
-    [SerializeField] private bool canShoot = true;
-    [SerializeField] private float shotCooldown = 0.25f;
+    [SerializeField] private float baseEnlargeSize = 1.1f;
 
-    private bool shoot;
+    private bool enlarge;
 
     protected override void InitState()
     {
@@ -25,18 +23,24 @@ public class Enlarge : ShootingModes
 
     private void EnlargeObject()
     {
-        if (shoot && canShoot)
+        if (enlarge && canShoot && playerController.magazine > 0 && !reloading)
         {
-            playerController.EnlargeShoot();
+            playerController.EnlargeShoot(baseEnlargeSize);
             canShoot = false;
             StartCoroutine(StartCooldown());
+        }
+        
+        if(playerController.magazine <= 0 && !reloading)
+        {
+            Reload(reloadTime);
         }
     }
 
     protected override void GetInput()
     {
-        shoot = leftMouseClick;
+        enlarge = leftMouseClick;
     }
+
     IEnumerator StartCooldown()
     {
         //cooldown between each shot

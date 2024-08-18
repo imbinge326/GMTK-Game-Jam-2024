@@ -9,9 +9,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float switchCooldown;
     [SerializeField] private float reloadCooldown;
 
+    // Can remove SerializeField and just make the fields private
     [Header("Shot Counter")]
     [SerializeField] private int enlargeCount = 0;
     [SerializeField] private int shrinkCount = 0;
+    public int magazine = 7;
+
+    [Header("Multipliers")]
+    // Public so that outside script can alter
+    public float enlargeMultiplier = 1f;
+    public float shrinkMultiplier = 1f;
 
     private RaycastHit2D hit;
 
@@ -52,14 +59,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void EnlargeShoot()
+    public void EnlargeShoot(float enlargeSize)
     {
         Transform hitTransform = CheckHitObject(hit);
         if (hitTransform != null && enlargeCount < 3)
         {
-            hitTransform.localScale *= 1.1f;
+            hitTransform.localScale *= enlargeSize * enlargeMultiplier;
             enlargeCount++;
             shrinkCount--;
+            magazine--;
 
             if (enlargeCount > 3)
             {
@@ -68,14 +76,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-        public void ShrinkShoot()
+        public void ShrinkShoot(float shrinkSize)
     {
         Transform hitTransform = CheckHitObject(hit);
         if (hitTransform != null && shrinkCount < 3)
         {
-            hitTransform.localScale *= 0.9f;
+            hitTransform.localScale *= shrinkSize * shrinkMultiplier;
             shrinkCount++;
             enlargeCount--;
+            magazine--;
 
             if (shrinkCount > 3)
             {
@@ -83,6 +92,4 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
-
 }

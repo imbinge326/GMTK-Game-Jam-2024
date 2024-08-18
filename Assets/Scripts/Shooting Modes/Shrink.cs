@@ -5,12 +5,9 @@ using UnityEngine;
 public class Shrink : ShootingModes
 {
     [Header("Settings")]
-    [SerializeField] private float shrinkSize;
-    
-    [SerializeField] private bool canShoot = true;
-    [SerializeField] private float shotCooldown = 0.25f;
+    [SerializeField] private float baseShrinkSize = 0.9f;
 
-    private bool shoot;
+    private bool shrink;
 
     protected override void InitState()
     {
@@ -24,17 +21,22 @@ public class Shrink : ShootingModes
 
     private void ShrinkObject()
     {
-        if (shoot && canShoot)
+        if (shrink && canShoot && playerController.magazine > 0 && !reloading)
         {
-            playerController.ShrinkShoot();
+            playerController.ShrinkShoot(baseShrinkSize);
             canShoot = false;
             StartCoroutine(StartCooldown());
+        }
+        
+        if(playerController.magazine <= 0 && !reloading)
+        {
+            Reload(reloadTime);
         }
     }
 
     protected override void GetInput()
     {
-        shoot = rightMouseClick;
+        shrink = rightMouseClick;
     }
 
         IEnumerator StartCooldown()

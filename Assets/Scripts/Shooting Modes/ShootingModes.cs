@@ -7,7 +7,12 @@ public class ShootingModes : MonoBehaviour
     protected PlayerController playerController;
     protected bool leftMouseClick;
     protected bool rightMouseClick;
-    
+    protected bool canShoot = true;
+    protected bool reloading;
+
+    protected float reloadTime = 1.5f;
+    protected float shotCooldown = 0.25f;
+
     void Start()
     {
         InitState();
@@ -35,5 +40,21 @@ public class ShootingModes : MonoBehaviour
     protected virtual void GetInput()
     {
 
+    }
+
+    protected virtual void Reload(float reloadTime)
+    {
+        Debug.Log("Reloading!!!");
+        reloading = true;
+        StartCoroutine(StartCooldown(reloadTime));
+    }
+
+    IEnumerator StartCooldown(float reloadTime)
+    {
+        // Reload duration
+        yield return new WaitForSeconds(reloadTime);
+        Debug.Log("Reloaded!!!");
+        reloading = false;
+        playerController.magazine = 7;
     }
 }
