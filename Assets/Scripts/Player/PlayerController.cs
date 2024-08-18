@@ -33,25 +33,21 @@ public class PlayerController : MonoBehaviour
     }
     private Transform CheckHitObject(RaycastHit2D hit)
     {
-        //Debug.Log(hit);
         if (hit.collider != null)
         {
             // Check if the object hit has a specific tag
             if (hit.collider.CompareTag("Item"))
             {
-                //Debug.Log("Hit an object with the tag: " + hit.collider.tag);
                 Transform hitTransform = hit.collider.transform;
                 return hitTransform;
             }
             else
             {
-                //Debug.Log("Hit an object with a different tag: " + hit.collider.tag);
                 return null;
             }
         }
         else
         {
-            //Debug.Log("Nothing hit");
             return null;
         }
     }
