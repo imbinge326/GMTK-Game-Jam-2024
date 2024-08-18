@@ -46,6 +46,11 @@ public class PlayerController : MonoBehaviour
             if (hit.collider.CompareTag("Item"))
             {
                 Transform hitTransform = hit.collider.transform;
+                if (hit.collider.GetComponent<ParticleManager>() != null)
+                {
+                    ParticleManager particleScript = hit.collider.GetComponent<ParticleManager>();
+                    particleScript.EmitParticle(50); // Replace 50 with however amount of particles to emit
+                }
                 return hitTransform;
             }
             else
