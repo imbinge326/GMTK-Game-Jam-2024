@@ -822,6 +822,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tutorialLevelScene: Tutorial Level
+  firstLevelScene: Main Level
   mainMenuScene: MainMenu
 --- !u!4 &595489254
 Transform:

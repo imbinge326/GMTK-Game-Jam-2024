@@ -10,6 +10,7 @@ public class Enlarge : ShootingModes
     [SerializeField] private float baseEnlargeSize = 1.1f;
 
     private bool enlarge;
+    public GameObject muzzleFlash;
 
     protected override void InitState()
     {
@@ -25,10 +26,13 @@ public class Enlarge : ShootingModes
     {
         if (enlarge && canShoot && playerController.magazine > 0 && !reloading)
         {
+            muzzleFlash.SetActive(true);
             playerController.EnlargeShoot(baseEnlargeSize);
             canShoot = false;
+            StartCoroutine(DeactivateMuzzleFlash());
             StartCoroutine(StartCooldown());
-        }
+        }  
+            
         
         if(playerController.magazine <= 0 && !reloading)
         {
@@ -46,6 +50,12 @@ public class Enlarge : ShootingModes
         //cooldown between each shot
         yield return new WaitForSeconds(shotCooldown);
         canShoot = true;
+    }
+
+    IEnumerator DeactivateMuzzleFlash()
+    {
+        yield return new WaitForSeconds(0.2f);
+        muzzleFlash.SetActive(false);
     }
 
 }
