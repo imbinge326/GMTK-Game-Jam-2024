@@ -44,7 +44,6 @@ public class ShootingModes : MonoBehaviour
 
     protected virtual void Reload(float reloadTime)
     {
-        Debug.Log("Reloading!!!");
         reloading = true;
         StartCoroutine(StartCooldown(reloadTime));
     }
@@ -53,7 +52,6 @@ public class ShootingModes : MonoBehaviour
     {
         // Reload duration
         yield return new WaitForSeconds(reloadTime);
-        Debug.Log("Reloaded!!!");
         reloading = false;
         playerController.magazine = 7;
     }

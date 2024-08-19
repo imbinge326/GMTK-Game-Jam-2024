@@ -53,6 +53,9 @@ public class PlayerController : MonoBehaviour
             if (hit.collider.CompareTag("Item"))
             {
                 Transform hitTransform = hitObject.transform;
+
+                CheckMultiplier(hitObject);
+
                 return hitTransform;
             }
             else
@@ -63,6 +66,21 @@ public class PlayerController : MonoBehaviour
         else
         {
             return null;
+        }
+    }
+
+    void CheckMultiplier(Collider2D hitObj)
+    {
+        if (hitObj.GetComponent<ObjectMultiplier>() != null)
+        {
+            ObjectMultiplier multiplier = hitObj.GetComponent<ObjectMultiplier>();
+            enlargeMultiplier = multiplier.enlargeMultiplier;
+            shrinkMultiplier = multiplier.shrinkMultiplier;
+        }
+        else
+        {
+            enlargeMultiplier = 1f;
+            shrinkMultiplier = 1f;
         }
     }
 
@@ -91,7 +109,7 @@ public class PlayerController : MonoBehaviour
         Transform hitTransform = CheckHitObject(hit);
         if (hitTransform != null && shrinkCount < 3)
         {
-            hitTransform.localScale *= shrinkSize * shrinkMultiplier;
+            hitTransform.localScale *= shrinkSize / shrinkMultiplier;
             shrinkCount++;
             enlargeCount--;
             magazine--;
