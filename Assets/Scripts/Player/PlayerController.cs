@@ -52,9 +52,21 @@ public class PlayerController : MonoBehaviour
         if (hitObject != null)
         {
             // Check if the object hit has a specific tag
-            if (hit.collider.CompareTag("Item"))
+            if (hitObject.CompareTag("Item"))
             {
                 Transform hitTransform = hitObject.transform;
+
+                if (hitObject.GetComponent<ObjectMultiplier>() != null)
+                {
+                    ObjectMultiplier multiplier = hitObject.GetComponent<ObjectMultiplier>();
+                    CheckMultiplier(multiplier);
+                }
+                else
+                {
+                    enlargeMultiplier = 1f;
+                    shrinkMultiplier = 1f;
+                }
+
                 return hitTransform;
             }
             else
@@ -66,6 +78,12 @@ public class PlayerController : MonoBehaviour
         {
             return null;
         }
+    }
+
+    void CheckMultiplier(ObjectMultiplier multiplier)
+    {
+        enlargeMultiplier = multiplier.enlargeMultiplier;
+        shrinkMultiplier = multiplier.shrinkMultiplier;
     }
 
     public void EnlargeShoot(float enlargeSize)
@@ -93,7 +111,7 @@ public class PlayerController : MonoBehaviour
         Transform hitTransform = CheckHitObject(hit);
         if (hitTransform != null && shrinkCount < 3)
         {
-            hitTransform.localScale *= shrinkSize * shrinkMultiplier;
+            hitTransform.localScale *= shrinkSize / shrinkMultiplier;
             shrinkCount++;
             enlargeCount--;
             magazine--;
