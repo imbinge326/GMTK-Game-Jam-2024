@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    ParticleManager particleManager;
+    SoundManager soundManager;
+
     [Header("Cooldowns")]
     [SerializeField] private float switchCooldown;
     [SerializeField] private float reloadCooldown;
@@ -28,6 +31,9 @@ public class PlayerController : MonoBehaviour
     {
         mainCamera = Camera.main;
         Cursor.visible = false;
+
+        particleManager = GetComponent<ParticleManager>();
+        soundManager = GameObject.Find("Sound Emitter").GetComponent<SoundManager>();
     }
 
     void Update()
@@ -40,17 +46,13 @@ public class PlayerController : MonoBehaviour
     }
     private Transform CheckHitObject(RaycastHit2D hit)
     {
-        if (hit.collider != null)
+        var hitObject = hit.collider;
+        if (hitObject != null)
         {
             // Check if the object hit has a specific tag
             if (hit.collider.CompareTag("Item"))
             {
-                Transform hitTransform = hit.collider.transform;
-                if (hit.collider.GetComponent<ParticleManager>() != null)
-                {
-                    ParticleManager particleScript = hit.collider.GetComponent<ParticleManager>();
-                    particleScript.EmitParticle(50); // Replace 50 with however amount of particles to emit
-                }
+                Transform hitTransform = hitObject.transform;
                 return hitTransform;
             }
             else
@@ -74,6 +76,9 @@ public class PlayerController : MonoBehaviour
             shrinkCount--;
             magazine--;
 
+            EmitParticle(hitTransform);
+            PlayAudio(hitTransform, 0); // 0 is the order in the list for enlarge sound
+
             if (enlargeCount > 3)
             {
                 enlargeCount = 3;
@@ -91,10 +96,23 @@ public class PlayerController : MonoBehaviour
             enlargeCount--;
             magazine--;
 
+            EmitParticle(hitTransform);
+            PlayAudio(hitTransform, 1); // 1 is the order in the list for shrink sound
+
             if (shrinkCount > 3)
             {
                 shrinkCount = 3;
             }
         }
+    }
+
+    void EmitParticle(Transform hitTransform)
+    {
+        particleManager.EmitHitParticle(50, hitTransform); // Replace 50 with number of particles to emit
+    }
+
+    void PlayAudio(Transform hitTransform, int audioClipNum)
+    {
+        soundManager.EmitSound(audioClipNum, hitTransform);
     }
 }

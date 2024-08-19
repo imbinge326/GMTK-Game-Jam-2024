@@ -8,11 +8,14 @@ public class ParticleManager : MonoBehaviour
 
     void Start()
     {
-        particle = GetComponent<ParticleSystem>();
+        particle = GameObject.Find("Hit Particle").GetComponent<ParticleSystem>();
     }
 
-    public void EmitParticle(int particleCount)
+    public void EmitHitParticle(int particleCount, Transform hitObject)
     {
+        var shape = particle.shape;
+        shape.radius = hitObject.localScale.magnitude;
+        particle.transform.position = hitObject.position;
         particle.Emit(particleCount);
     }
 }
