@@ -11,10 +11,6 @@ public class PlayerController : MonoBehaviour
     SoundManager soundManager;
     TextMeshProUGUI magazineText;
 
-    // Can remove SerializeField and just make the fields private
-    [Header("Shot Counter")]
-    [SerializeField] private int enlargeCount = 0;
-    [SerializeField] private int shrinkCount = 0;
     public int magazine = 7;
 
     [Header("Multipliers")]
@@ -46,28 +42,18 @@ public class PlayerController : MonoBehaviour
 
         magazineText.text = (magazine + " | 7");
     }
-    private Transform CheckHitObject(RaycastHit2D hit)
+    private Collider2D CheckHitObject(RaycastHit2D hit)
     {
         var hitObject = hit.collider;
         if (hitObject != null)
         {
             // Check if the object hit has a specific tag
-            if (hitObject.CompareTag("Item"))
+            if (hitObject.CompareTag("Item") && hitObject.GetComponent<ObjectMultiplier>() != null)
             {
-                Transform hitTransform = hitObject.transform;
+                ObjectMultiplier multiplier = hitObject.GetComponent<ObjectMultiplier>();
+                CheckMultiplier(multiplier);
 
-                if (hitObject.GetComponent<ObjectMultiplier>() != null)
-                {
-                    ObjectMultiplier multiplier = hitObject.GetComponent<ObjectMultiplier>();
-                    CheckMultiplier(multiplier);
-                }
-                else
-                {
-                    enlargeMultiplier = 1f;
-                    shrinkMultiplier = 1f;
-                }
-
-                return hitTransform;
+                return hitObject;
             }
             else
             {
@@ -88,40 +74,51 @@ public class PlayerController : MonoBehaviour
 
     public void EnlargeShoot(float enlargeSize)
     {
-        Transform hitTransform = CheckHitObject(hit);
-        if (hitTransform != null && enlargeCount < 3)
+        var hitObj = CheckHitObject(hit);
+
+        if (hitObj != null)
         {
-            hitTransform.localScale *= enlargeSize * enlargeMultiplier;
-            enlargeCount++;
-            shrinkCount--;
-            magazine--;
-
-            EmitParticle(hitTransform);
-            PlayAudio(hitTransform, 0); // 0 is the order in the list for enlarge sound
-
-            if (enlargeCount > 3)
+            ObjectMultiplier multiplier = hitObj.GetComponent<ObjectMultiplier>();
+            if (multiplier.enlargeCount < 3)
             {
-                enlargeCount = 3;
+                Transform hitTransform = hitObj.transform;
+
+                hitTransform.localScale *= enlargeSize * enlargeMultiplier;
+                multiplier.enlargeCount++;
+                multiplier.shrinkCount--;
+
+                EmitParticle(hitTransform);
+                PlayAudio(hitTransform, 0); // 0 is the order in the list for enlarge sound
+
+                if (multiplier.enlargeCount > 3)
+                {
+                    multiplier.enlargeCount = 3;
+                }
             }
         }
     }
 
-        public void ShrinkShoot(float shrinkSize)
+    public void ShrinkShoot(float shrinkSize)
     {
-        Transform hitTransform = CheckHitObject(hit);
-        if (hitTransform != null && shrinkCount < 3)
+        var hitObj = CheckHitObject(hit);
+
+        if (hitObj != null)
         {
-            hitTransform.localScale *= shrinkSize / shrinkMultiplier;
-            shrinkCount++;
-            enlargeCount--;
-            magazine--;
-
-            EmitParticle(hitTransform);
-            PlayAudio(hitTransform, 1); // 1 is the order in the list for shrink sound
-
-            if (shrinkCount > 3)
+            ObjectMultiplier multiplier = hitObj.GetComponent<ObjectMultiplier>();
+            if (multiplier.shrinkCount < 3)
             {
-                shrinkCount = 3;
+                Transform hitTransform = hitObj.transform;
+                hitTransform.localScale *= shrinkSize / shrinkMultiplier;
+                multiplier.shrinkCount++;
+                multiplier.enlargeCount--;
+
+                EmitParticle(hitTransform);
+                PlayAudio(hitTransform, 1); // 1 is the order in the list for shrink sound
+
+                if (multiplier.shrinkCount > 3)
+                {
+                    multiplier.shrinkCount = 3;
+                }
             }
         }
     }

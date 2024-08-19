@@ -31,6 +31,9 @@ public class Enlarge : ShootingModes
             canShoot = false;
             StartCoroutine(DeactivateMuzzleFlash());
             StartCoroutine(StartCooldown());
+
+            soundManager.EmitSound(4, transform);
+            playerController.magazine--;
         }  
             
         
