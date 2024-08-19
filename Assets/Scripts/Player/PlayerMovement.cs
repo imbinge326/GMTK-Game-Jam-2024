@@ -15,7 +15,6 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D rigidBody2D;
     private bool isOnGround;
-
     public float maximumSpeed = 5f;
 
     public void Awake()
