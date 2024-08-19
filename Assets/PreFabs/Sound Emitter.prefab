@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1541450892580433141}
-  - component: {fileID: 8462044729207714438}
   - component: {fileID: 6493255373834658414}
+  - component: {fileID: 8462044729207714438}
   m_Layer: 0
   m_Name: Sound Emitter
   m_TagString: Untagged
@@ -33,6 +33,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6493255373834658414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878330569856808868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ece8a1d31072dba4a8161755757d4b06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundEffects:
+  - {fileID: 8300000, guid: 5ebd1e0ea95f5ea4490f560984068e29, type: 3}
+  - {fileID: 8300000, guid: f86d300f34e368c4cb9a439369034df5, type: 3}
+  - {fileID: 8300000, guid: dad64071ac272414ab761b7a5b2280f8, type: 3}
+  - {fileID: 8300000, guid: 47c3dc0763e00ac47af296f2300b0c93, type: 3}
+  - {fileID: 8300000, guid: 5a6aa17b00f8aa043a712090600a80b9, type: 3}
 --- !u!82 &8462044729207714438
 AudioSource:
   m_ObjectHideFlags: 0
@@ -129,20 +147,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6493255373834658414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 878330569856808868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ece8a1d31072dba4a8161755757d4b06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  soundEffects:
-  - {fileID: 8300000, guid: 5ebd1e0ea95f5ea4490f560984068e29, type: 3}
-  - {fileID: 8300000, guid: f86d300f34e368c4cb9a439369034df5, type: 3}
-  - {fileID: 8300000, guid: dad64071ac272414ab761b7a5b2280f8, type: 3}
-  - {fileID: 8300000, guid: 47c3dc0763e00ac47af296f2300b0c93, type: 3}
