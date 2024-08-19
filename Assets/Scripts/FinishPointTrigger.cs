@@ -14,10 +14,8 @@ public class FinishPointTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Gay1");
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Gay2");
             cameraScript.canFollow = false;
         }
     }

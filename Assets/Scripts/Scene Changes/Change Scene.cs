@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class ChangeScene : MonoBehaviour
 {
     public string tutorialLevelScene;
-    //public string firstLevelScene;
+    public string firstLevelScene;
     public string mainMenuScene;
     public void OnTutorialButtonClicked()
     {
@@ -15,7 +15,7 @@ public class ChangeScene : MonoBehaviour
 
     public void OnStartLevelButtonClicked()
     {
-        //SceneManager.LoadScene(firstLevelScene);
+        SceneManager.LoadScene(firstLevelScene);
     }
 
     public void OnMainMenuButtonClicked()
