@@ -1,16 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     ParticleManager particleManager;
     SoundManager soundManager;
-
-    [Header("Cooldowns")]
-    [SerializeField] private float switchCooldown;
-    [SerializeField] private float reloadCooldown;
+    TextMeshProUGUI magazineText;
 
     // Can remove SerializeField and just make the fields private
     [Header("Shot Counter")]
@@ -34,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
         particleManager = GetComponent<ParticleManager>();
         soundManager = GameObject.Find("Sound Emitter").GetComponent<SoundManager>();
+        magazineText = GameObject.Find("Bullet Count").GetComponent<TextMeshProUGUI>();
     }
 
     void Update()
@@ -43,6 +43,8 @@ public class PlayerController : MonoBehaviour
         hit = Physics2D.Raycast(worldPosition, Vector2.zero);
 
         transform.position = worldPosition;
+
+        magazineText.text = (magazine + " | 7");
     }
     private Transform CheckHitObject(RaycastHit2D hit)
     {
@@ -50,9 +52,21 @@ public class PlayerController : MonoBehaviour
         if (hitObject != null)
         {
             // Check if the object hit has a specific tag
-            if (hit.collider.CompareTag("Item"))
+            if (hitObject.CompareTag("Item"))
             {
                 Transform hitTransform = hitObject.transform;
+
+                if (hitObject.GetComponent<ObjectMultiplier>() != null)
+                {
+                    ObjectMultiplier multiplier = hitObject.GetComponent<ObjectMultiplier>();
+                    CheckMultiplier(multiplier);
+                }
+                else
+                {
+                    enlargeMultiplier = 1f;
+                    shrinkMultiplier = 1f;
+                }
+
                 return hitTransform;
             }
             else
@@ -64,6 +78,12 @@ public class PlayerController : MonoBehaviour
         {
             return null;
         }
+    }
+
+    void CheckMultiplier(ObjectMultiplier multiplier)
+    {
+        enlargeMultiplier = multiplier.enlargeMultiplier;
+        shrinkMultiplier = multiplier.shrinkMultiplier;
     }
 
     public void EnlargeShoot(float enlargeSize)
@@ -91,7 +111,7 @@ public class PlayerController : MonoBehaviour
         Transform hitTransform = CheckHitObject(hit);
         if (hitTransform != null && shrinkCount < 3)
         {
-            hitTransform.localScale *= shrinkSize * shrinkMultiplier;
+            hitTransform.localScale *= shrinkSize / shrinkMultiplier;
             shrinkCount++;
             enlargeCount--;
             magazine--;

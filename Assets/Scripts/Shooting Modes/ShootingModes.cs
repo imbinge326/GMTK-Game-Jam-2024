@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ShootingModes : MonoBehaviour
 {
+    SoundManager soundManager;
+
     protected PlayerController playerController;
     protected bool leftMouseClick;
     protected bool rightMouseClick;
@@ -16,6 +18,7 @@ public class ShootingModes : MonoBehaviour
     void Start()
     {
         InitState();
+        soundManager = GameObject.Find("Sound Emitter").GetComponent<SoundManager>();
     }
 
     protected virtual void InitState()
@@ -44,8 +47,8 @@ public class ShootingModes : MonoBehaviour
 
     protected virtual void Reload(float reloadTime)
     {
-        Debug.Log("Reloading!!!");
         reloading = true;
+        soundManager.EmitSound(3, playerController.transform);
         StartCoroutine(StartCooldown(reloadTime));
     }
 
@@ -53,7 +56,6 @@ public class ShootingModes : MonoBehaviour
     {
         // Reload duration
         yield return new WaitForSeconds(reloadTime);
-        Debug.Log("Reloaded!!!");
         reloading = false;
         playerController.magazine = 7;
     }
