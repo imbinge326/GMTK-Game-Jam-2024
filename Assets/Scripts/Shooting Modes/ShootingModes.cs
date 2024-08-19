@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class ShootingModes : MonoBehaviour
 {
-    SoundManager soundManager;
-
+    protected SoundManager soundManager;
     protected PlayerController playerController;
     protected bool leftMouseClick;
     protected bool rightMouseClick;

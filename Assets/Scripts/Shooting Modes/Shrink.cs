@@ -29,6 +29,9 @@ public class Shrink : ShootingModes
             canShoot = false;
             StartCoroutine(DeactivateMuzzleFlash());
             StartCoroutine(StartCooldown());
+
+            soundManager.EmitSound(4, transform);
+            playerController.magazine--;
         }
         
         if(playerController.magazine <= 0 && !reloading)
