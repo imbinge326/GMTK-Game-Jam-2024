@@ -41,13 +41,13 @@ public class PlayerMovement : MonoBehaviour
     {
         isOnGround = Physics2D.OverlapCircle(groundChecker.position, checkRadius, groundTerrain);
         bool jump = Input.GetKeyDown(KeyCode.Space);
-
+        
         if (jump && isOnGround)
         {
             if (!hasJumped)
             {
                 jumpAnimator.SetBool("isJumping", true);
-                rigidBody2D.AddForce(transform.up * jumpHeight, ForceMode2D.Impulse);
+                rigidBody2D.AddForce(transform.up * jumpHeight, ForceMode2D.Force);
                 soundManager.EmitSound(2, transform); // 2 is the order in the list for jump sound
                 hasJumped = true; // Set flag to true to prevent multiple emissions
             }
