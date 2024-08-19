@@ -1,16 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     ParticleManager particleManager;
     SoundManager soundManager;
-
-    [Header("Cooldowns")]
-    [SerializeField] private float switchCooldown;
-    [SerializeField] private float reloadCooldown;
+    TextMeshProUGUI magazineText;
 
     // Can remove SerializeField and just make the fields private
     [Header("Shot Counter")]
@@ -34,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
         particleManager = GetComponent<ParticleManager>();
         soundManager = GameObject.Find("Sound Emitter").GetComponent<SoundManager>();
+        magazineText = GameObject.Find("Bullet Count").GetComponent<TextMeshProUGUI>();
     }
 
     void Update()
@@ -43,6 +43,8 @@ public class PlayerController : MonoBehaviour
         hit = Physics2D.Raycast(worldPosition, Vector2.zero);
 
         transform.position = worldPosition;
+
+        magazineText.text = (magazine + " | 7");
     }
     private Transform CheckHitObject(RaycastHit2D hit)
     {
