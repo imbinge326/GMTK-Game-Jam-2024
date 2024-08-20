@@ -1,21 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     ParticleManager particleManager;
     SoundManager soundManager;
+    TextMeshProUGUI magazineText;
 
-    [Header("Cooldowns")]
-    [SerializeField] private float switchCooldown;
-    [SerializeField] private float reloadCooldown;
-
-    // Can remove SerializeField and just make the fields private
-    [Header("Shot Counter")]
-    [SerializeField] private int enlargeCount = 0;
-    [SerializeField] private int shrinkCount = 0;
     public int magazine = 7;
 
     [Header("Multipliers")]
@@ -34,6 +29,7 @@ public class PlayerController : MonoBehaviour
 
         particleManager = GetComponent<ParticleManager>();
         soundManager = GameObject.Find("Sound Emitter").GetComponent<SoundManager>();
+        magazineText = GameObject.Find("Bullet Count").GetComponent<TextMeshProUGUI>();
     }
 
     void Update()
@@ -43,20 +39,21 @@ public class PlayerController : MonoBehaviour
         hit = Physics2D.Raycast(worldPosition, Vector2.zero);
 
         transform.position = worldPosition;
+
+        magazineText.text = (magazine + " | 7");
     }
-    private Transform CheckHitObject(RaycastHit2D hit)
+    private Collider2D CheckHitObject(RaycastHit2D hit)
     {
         var hitObject = hit.collider;
         if (hitObject != null)
         {
             // Check if the object hit has a specific tag
-            if (hit.collider.CompareTag("Item"))
+            if (hitObject.CompareTag("Item") && hitObject.GetComponent<ObjectMultiplier>() != null)
             {
-                Transform hitTransform = hitObject.transform;
+                ObjectMultiplier multiplier = hitObject.GetComponent<ObjectMultiplier>();
+                CheckMultiplier(multiplier);
 
-                CheckMultiplier(hitObject);
-
-                return hitTransform;
+                return hitObject;
             }
             else
             {
@@ -69,57 +66,59 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void CheckMultiplier(Collider2D hitObj)
+    void CheckMultiplier(ObjectMultiplier multiplier)
     {
-        if (hitObj.GetComponent<ObjectMultiplier>() != null)
-        {
-            ObjectMultiplier multiplier = hitObj.GetComponent<ObjectMultiplier>();
-            enlargeMultiplier = multiplier.enlargeMultiplier;
-            shrinkMultiplier = multiplier.shrinkMultiplier;
-        }
-        else
-        {
-            enlargeMultiplier = 1f;
-            shrinkMultiplier = 1f;
-        }
+        enlargeMultiplier = multiplier.enlargeMultiplier;
+        shrinkMultiplier = multiplier.shrinkMultiplier;
     }
 
     public void EnlargeShoot(float enlargeSize)
     {
-        Transform hitTransform = CheckHitObject(hit);
-        if (hitTransform != null && enlargeCount < 3)
+        var hitObj = CheckHitObject(hit);
+
+        if (hitObj != null)
         {
-            hitTransform.localScale *= enlargeSize * enlargeMultiplier;
-            enlargeCount++;
-            shrinkCount--;
-            magazine--;
-
-            EmitParticle(hitTransform);
-            PlayAudio(hitTransform, 0); // 0 is the order in the list for enlarge sound
-
-            if (enlargeCount > 3)
+            ObjectMultiplier multiplier = hitObj.GetComponent<ObjectMultiplier>();
+            if (multiplier.enlargeCount < 3)
             {
-                enlargeCount = 3;
+                Transform hitTransform = hitObj.transform;
+
+                hitTransform.localScale *= enlargeSize * enlargeMultiplier;
+                multiplier.enlargeCount++;
+                multiplier.shrinkCount--;
+
+                EmitParticle(hitTransform);
+                PlayAudio(hitTransform, 0); // 0 is the order in the list for enlarge sound
+
+                if (multiplier.enlargeCount > 3)
+                {
+                    multiplier.enlargeCount = 3;
+                }
             }
         }
     }
 
-        public void ShrinkShoot(float shrinkSize)
+    public void ShrinkShoot(float shrinkSize)
     {
-        Transform hitTransform = CheckHitObject(hit);
-        if (hitTransform != null && shrinkCount < 3)
+        var hitObj = CheckHitObject(hit);
+
+        if (hitObj != null)
         {
-            hitTransform.localScale *= shrinkSize / shrinkMultiplier;
-            shrinkCount++;
-            enlargeCount--;
-            magazine--;
-
-            EmitParticle(hitTransform);
-            PlayAudio(hitTransform, 1); // 1 is the order in the list for shrink sound
-
-            if (shrinkCount > 3)
+            ObjectMultiplier multiplier = hitObj.GetComponent<ObjectMultiplier>();
+            if (multiplier.shrinkCount < 3)
             {
-                shrinkCount = 3;
+                Transform hitTransform = hitObj.transform;
+                hitTransform.localScale *= shrinkSize / shrinkMultiplier;
+                multiplier.shrinkCount++;
+                multiplier.enlargeCount--;
+
+                EmitParticle(hitTransform);
+                PlayAudio(hitTransform, 1); // 1 is the order in the list for shrink sound
+
+                if (multiplier.shrinkCount > 3)
+                {
+                    multiplier.shrinkCount = 3;
+                }
             }
         }
     }

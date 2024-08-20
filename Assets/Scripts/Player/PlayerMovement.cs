@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rigidBody2D;
     private bool isOnGround;
     public float maximumSpeed = 5f;
+    public Animator jumpAnimator;
 
     public void Awake()
     {
@@ -39,13 +40,14 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         isOnGround = Physics2D.OverlapCircle(groundChecker.position, checkRadius, groundTerrain);
-
-        float jump = Input.GetAxis("Jump");
-        if (jump == 1 && isOnGround)
+        bool jump = Input.GetKeyDown(KeyCode.Space);
+        
+        if (jump && isOnGround)
         {
             if (!hasJumped)
             {
-                rigidBody2D.AddForce(transform.up * jumpHeight, ForceMode2D.Impulse);
+                jumpAnimator.SetBool("isJumping", true);
+                rigidBody2D.AddForce(transform.up * jumpHeight, ForceMode2D.Force);
                 soundManager.EmitSound(2, transform); // 2 is the order in the list for jump sound
                 hasJumped = true; // Set flag to true to prevent multiple emissions
             }
@@ -53,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             // Reset the flag when not on ground so sound can be emitted again
+            jumpAnimator.SetBool("isJumping", false);
             hasJumped = false;
         }
     }

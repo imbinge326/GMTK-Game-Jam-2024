@@ -8,6 +8,7 @@ public class Shrink : ShootingModes
     [SerializeField] private float baseShrinkSize = 0.9f;
 
     private bool shrink;
+    public GameObject muzzleFlash;
 
     protected override void InitState()
     {
@@ -23,9 +24,14 @@ public class Shrink : ShootingModes
     {
         if (shrink && canShoot && playerController.magazine > 0 && !reloading)
         {
+            muzzleFlash.SetActive(true);
             playerController.ShrinkShoot(baseShrinkSize);
             canShoot = false;
+            StartCoroutine(DeactivateMuzzleFlash());
             StartCoroutine(StartCooldown());
+
+            soundManager.EmitSound(4, transform);
+            playerController.magazine--;
         }
         
         if(playerController.magazine <= 0 && !reloading)
@@ -39,10 +45,16 @@ public class Shrink : ShootingModes
         shrink = rightMouseClick;
     }
 
-        IEnumerator StartCooldown()
+    IEnumerator StartCooldown()
     {
         //cooldown between each shot
         yield return new WaitForSeconds(shotCooldown);
         canShoot = true;
+    }
+
+    IEnumerator DeactivateMuzzleFlash()
+    {
+        yield return new WaitForSeconds(0.2f);
+        muzzleFlash.SetActive(false);
     }
 }

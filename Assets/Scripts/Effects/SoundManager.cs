@@ -4,21 +4,33 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    AudioSource audioSource;
-
     [Header("List of Sounds")]
     public List<AudioClip> soundEffects;
 
-    void Start()
-    {
-        audioSource = GetComponent<AudioSource>();
-    }
-
     public void EmitSound(int audioClipNum, Transform emitFromObject)
     {
-        AudioClip clipToPlay = soundEffects[audioClipNum];
-        audioSource.clip = clipToPlay;
-        audioSource.transform.position = emitFromObject.position;
-        audioSource.Play();
+        if (audioClipNum < 0 || audioClipNum >= soundEffects.Count)
+        {
+            Debug.LogWarning("Sound index out of range");
+            return;
+        }
+
+        if (audioClipNum == 3)
+        {
+            AudioSource audioSource = GetComponent<AudioSource>();
+            audioSource.clip = soundEffects[audioClipNum];
+            audioSource.Play();
+        }
+        else
+        {
+            GameObject soundObject = new GameObject("SoundObject");
+            soundObject.transform.position = emitFromObject.position;
+
+            AudioSource audioSource = soundObject.AddComponent<AudioSource>();
+            audioSource.clip = soundEffects[audioClipNum];
+            audioSource.Play();
+
+            Destroy(soundObject, audioSource.clip.length);
+        }
     }
 }
