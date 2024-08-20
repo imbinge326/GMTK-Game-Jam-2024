@@ -19,6 +19,7 @@ public class Enlarge : ShootingModes
 
     public override void ExecuteMode()
     {
+        base.ExecuteMode();
         EnlargeObject();
     }
 
@@ -39,7 +40,7 @@ public class Enlarge : ShootingModes
         
         if(playerController.magazine <= 0 && !reloading)
         {
-            Reload(reloadTime);
+            Reload(3, autoReloadTime);
         }
     }
 

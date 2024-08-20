@@ -15,7 +15,7 @@ public class SoundManager : MonoBehaviour
             return;
         }
 
-        if (audioClipNum == 3)
+        if (audioClipNum == 3 || audioClipNum == 5)
         {
             AudioSource audioSource = GetComponent<AudioSource>();
             audioSource.clip = soundEffects[audioClipNum];
