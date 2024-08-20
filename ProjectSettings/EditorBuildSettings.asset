@@ -5,12 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/MainScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 0
-    path: Assets/Scenes/Paul.unity
-    guid: 952f96710852e234398d390df9fa725e
   - enabled: 1
     path: Assets/Scenes/DeathScreen.unity
     guid: f621ad91df369464bb3bae6f494ef706
@@ -20,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 4b1c4c347ed3f7f4bbbe1dfe45f17318
+  - enabled: 1
+    path: Assets/Scenes/Main Level.unity
+    guid: 7d85c922a98c4f546a25ad52116302eb
+  - enabled: 1
+    path: Assets/Scenes/Complete Tutorial.unity
+    guid: dbe1ddd26f10d2249b0934b2c21c04aa
   m_configObjects: {}

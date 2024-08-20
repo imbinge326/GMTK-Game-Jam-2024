@@ -5,22 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class ChangeScene : MonoBehaviour
 {
-    public string tutorialLevelScene;
-    public string firstLevelScene;
-    public string mainMenuScene;
     public void OnTutorialButtonClicked()
     {
-        SceneManager.LoadScene(tutorialLevelScene);
+        SceneManager.LoadScene("Tutorial Level");
     }
 
     public void OnStartLevelButtonClicked()
     {
-        SceneManager.LoadScene(firstLevelScene);
+        SceneManager.LoadScene("Main Level");
     }
 
     public void OnMainMenuButtonClicked()
     {
-        SceneManager.LoadScene(mainMenuScene);
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void OnExitButtonClicked()
