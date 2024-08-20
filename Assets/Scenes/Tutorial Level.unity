@@ -7184,6 +7184,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6493255373834658414, guid: 9d21addea3e1e704392d2f802687e5ec, type: 3}
+      propertyPath: soundEffects.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6493255373834658414, guid: 9d21addea3e1e704392d2f802687e5ec, type: 3}
+      propertyPath: soundEffects.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: da5e267fbe1afb343be0c22be8779515, type: 3}
+    - target: {fileID: 6493255373834658414, guid: 9d21addea3e1e704392d2f802687e5ec, type: 3}
+      propertyPath: soundEffects.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: 516bc044ad22d7c4a95a600433bf18ca, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
