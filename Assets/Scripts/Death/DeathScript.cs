@@ -9,6 +9,7 @@ public class DeathScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            Cursor.visible = true;
             SceneManager.LoadScene("DeathScreen");
         }
     }
