@@ -17,6 +17,7 @@ public class Shrink : ShootingModes
     
     public override void ExecuteMode()
     {
+        base.ExecuteMode();
         ShrinkObject();
     }
 
@@ -36,7 +37,7 @@ public class Shrink : ShootingModes
         
         if(playerController.magazine <= 0 && !reloading)
         {
-            Reload(reloadTime);
+            Reload(3, autoReloadTime);
         }
     }
 
